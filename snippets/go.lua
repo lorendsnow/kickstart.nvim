@@ -1,12 +1,12 @@
 return {
   -- Error/Ok Handling
-  s('nnilerr', {
+  s('nnilerr', { -- Basic "if err != nil" block
     t { 'if err != nil {', '\t' },
     i(1, '//action'),
     t { '', '}' },
   }),
 
-  s('herr', {
+  s('herr', { -- Call function that may return err and include if err!= nil block
     i(1, '_'),
     t ', err := ',
     i(2, 'funcCall'),
@@ -15,7 +15,7 @@ return {
     t { '', '}' },
   }),
 
-  s('iferr', {
+  s('iferr', { -- Call function that only returns err and handle err if not nil
     t 'if err := ',
     i(1, '[FUNC]'),
     t { '; err != nil {', '\t' },
@@ -23,7 +23,7 @@ return {
     t { '', '}' },
   }),
 
-  s('ifok', {
+  s('ifok', { -- Call function that only returns ok and handles if !ok
     t 'if ok := ',
     i(1, '[FUNC]'),
     t { '; !ok {', '\t' },
@@ -32,19 +32,31 @@ return {
   }),
 
   -- Loops
-  s('rangearr', {
+  s('rangearr', { -- Loop over array/slice range
     t 'for ',
     i(1, 'i'),
     t ', ',
     i(2, 'v'),
     t ' := range ',
-    i(3, 'arr'),
+    i(3, 'ArrName'),
     t { ' {', '\t' },
     i(4, 'action'),
     t { '', '}' },
   }),
 
-  s('for', {
+  s('rangemap', { -- Loop over map k/v range
+    t 'for ',
+    i(1, 'k'),
+    t ', ',
+    i(2, 'v'),
+    t ' := range ',
+    i(3, 'MapName'),
+    t { ' {', '\t' },
+    i(4, '//action'),
+    t { '', '}' },
+  }),
+
+  s('for', { -- Basic for loop
     t 'for ',
     i(1, 'i'),
     t ':=',
@@ -62,7 +74,7 @@ return {
   }),
 
   -- Functions/Methods
-  s('nfunc', { -- Normal Function
+  s('nfunc', { -- Normal function
     t 'func ',
     i(1, 'FuncName'),
     t '(',
@@ -74,7 +86,7 @@ return {
     t { '', '}' },
   }),
 
-  s('sfunc', { -- Struct Method
+  s('sfunc', { -- Struct method
     t 'func (',
     i(1, 'receiver'),
     t ') ',
@@ -89,7 +101,7 @@ return {
   }),
 
   -- Structs
-  s('pubstruct', {
+  s('pubstruct', { -- Basic public struct with public fields
     t 'type ',
     i(1, 'StructName'),
     t { ' struct {', '\t' },
@@ -97,6 +109,20 @@ return {
     t ' ',
     i(3, 'Type'),
     t { '', '}' },
+  }),
+
+  s('constructor', { -- Basic NewStruct() constructor function
+    t 'func New',
+    i(1, 'Struct'),
+    t '(',
+    i(2),
+    t ') *',
+    rep(1),
+    t { ' {', '\treturn &' },
+    rep(1),
+    t { '{', '\t\t' },
+    i(3),
+    t { '', '\t}', '}' },
   }),
 
   -- Enums
