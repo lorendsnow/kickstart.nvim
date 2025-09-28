@@ -683,7 +683,6 @@ require('lazy').setup({
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
-        go = { 'gofmt', 'goimports', 'golangci-lint' },
         c = { 'clang' },
       },
     },
@@ -707,15 +706,11 @@ require('lazy').setup({
           end
           return 'make install_jsregexp'
         end)(),
-        dependencies = {
-          {
-            'rafamadriz/friendly-snippets',
-            config = function()
-              require('luasnip.loaders.from_vscode').lazy_load()
-            end,
-          },
-        },
+        dependencies = {},
         opts = {},
+        config = function()
+          require('luasnip.loaders.from_lua').load { paths = './snippets' }
+        end,
       },
       'folke/lazydev.nvim',
     },
@@ -814,7 +809,10 @@ require('lazy').setup({
       'neovim/nvim-lspconfig',
       'nvim-treesitter/nvim-treesitter',
     },
-    opts = {},
+    opts = {
+      goimports = 'goimports',
+      gofmt = 'gofumpt',
+    },
     config = function(opts)
       require('go').setup(opts)
       local format_sync_grp = vim.api.nvim_create_augroup('GoFormat', {})
