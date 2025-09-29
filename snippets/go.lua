@@ -73,6 +73,23 @@ return {
     t { '', '}' },
   }),
 
+  -- Switch
+  s('switch', {
+    t 'switch ',
+    i(1, '[var]'),
+    t { '{', 'case ' },
+    i(2, '[expression]'),
+    t { ':', '\t' },
+    i(3, '//action'),
+    t { '', 'case ' },
+    i(4, '[expression]'),
+    t { ':', '\t' },
+    i(5, '//action'),
+    t { '', 'default:', '\t' },
+    i(6, '//action'),
+    t { '', '}' },
+  }),
+
   -- Functions/Methods
   s('nfunc', { -- Normal function
     t 'func ',
