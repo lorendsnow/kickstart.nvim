@@ -397,6 +397,7 @@ require('lazy').setup({
       'saghen/blink.cmp',
     },
     config = function()
+      vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
       -- Brief aside: **What is LSP?**
       --
       -- LSP is an initialism you've probably heard, but might not understand what it is.
@@ -808,6 +809,7 @@ require('lazy').setup({
       'ray-x/guihua.lua',
       'neovim/nvim-lspconfig',
       'nvim-treesitter/nvim-treesitter',
+      'theHamsta/nvim-dap-virtual-text',
     },
     opts = {
       goimports = 'goimports',
