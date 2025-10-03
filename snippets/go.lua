@@ -1,3 +1,5 @@
+---@diagnostic disable: undefined-global
+
 return {
   -- Error/Ok Handling
   s('nnilerr', { -- Basic "if err != nil" block
