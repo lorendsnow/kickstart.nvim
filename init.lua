@@ -613,7 +613,7 @@ require('lazy').setup({
       formatters = {
         clang = {
           command = 'clang-format',
-          args = { '--Werror', '--style=LLVM' },
+          args = { '--Werror', '--style=google' },
         },
       },
       nerd_font_varianttify_on_error = false,
