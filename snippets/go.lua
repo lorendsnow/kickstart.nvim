@@ -1,160 +1,243 @@
 ---@diagnostic disable: undefined-global
 
 return {
-  -- Error/Ok Handling
-  s('nnilerr', { -- Basic "if err != nil" block
-    t { 'if err != nil {', '\t' },
-    i(1, '//action'),
-    t { '', '}' },
-  }),
+  ---------------------------------------------------------
+  -- Error/Ok Handling                                    |
+  ---------------------------------------------------------
+  s(
+    'nnilerr', -- "non-nil error"
+    fmt( -- Basic "if err != nil" block
+      [[
+  if err != nil {{
+  	{}
+  }}
+  ]],
+      { i(1, '//action') }
+    )
+  ),
 
-  s('herr', { -- Call function that may return err and include if err!= nil block
-    i(1, '_'),
-    t ', err := ',
-    i(2, 'funcCall'),
-    t { '', 'if err != nil {', '\t' },
-    i(3, '//action'),
-    t { '', '}' },
-  }),
+  s(
+    'herr', -- "handle error"
+    fmt( -- Call function that may return err and include if err!= nil block
+      [[
+		{}, err := {}
+		if err != nil {{
+			{}
+		}}
+		]],
+      {
+        i(1),
+        i(2),
+        i(3, '//action'),
+      }
+    )
+  ),
 
-  s('iferr', { -- Call function that only returns err and handle err if not nil
-    t 'if err := ',
-    i(1, '[FUNC]'),
-    t { '; err != nil {', '\t' },
-    i(2, '//action'),
-    t { '', '}' },
-  }),
+  s(
+    'iferr', -- "if error"
+    fmt( -- Call function that only returns err and handle err if not nil
+      [[
+		if err := {}; err != nil {{
+			{}
+		}}
+		]],
+      {
+        i(1),
+        i(2, '//action'),
+      }
+    )
+  ),
 
-  s('ifok', { -- Call function that only returns ok and handles if !ok
-    t 'if ok := ',
-    i(1, '[FUNC]'),
-    t { '; !ok {', '\t' },
-    i(2, '//action'),
-    t { '', '}' },
-  }),
+  s(
+    'ifok',
+    fmt( -- Call function that only returns ok and handles if !ok
+      [[
+		if ok := {}; !ok {{
+			{}
+		}}
+		]],
+      {
+        i(1),
+        i(2, '//action'),
+      }
+    )
+  ),
+  ---------------------------------------------------------
+  -- Loops                                                |
+  ---------------------------------------------------------
+  s(
+    'rangearr', -- "range over array"
+    fmt( -- Loop over array/slice range
+      [[
+		for {}, {} := range {} {{
+			{}
+		}}
+		]],
+      {
+        i(1, 'i'),
+        i(2, 'v'),
+        i(3),
+        i(4, '//action'),
+      }
+    )
+  ),
 
-  -- Loops
-  s('rangearr', { -- Loop over array/slice range
-    t 'for ',
-    i(1, 'i'),
-    t ', ',
-    i(2, 'v'),
-    t ' := range ',
-    i(3, 'ArrName'),
-    t { ' {', '\t' },
-    i(4, 'action'),
-    t { '', '}' },
-  }),
+  s(
+    'rangemap',
+    fmt( -- Loop over map k/v range
+      [[
+		for {}, {} := range {} {{
+			{}
+		}}
+		]],
+      {
+        i(1, 'k'),
+        i(2, 'v'),
+        i(3),
+        i(4, '//action'),
+      }
+    )
+  ),
 
-  s('rangemap', { -- Loop over map k/v range
-    t 'for ',
-    i(1, 'k'),
-    t ', ',
-    i(2, 'v'),
-    t ' := range ',
-    i(3, 'MapName'),
-    t { ' {', '\t' },
-    i(4, '//action'),
-    t { '', '}' },
-  }),
-
-  s('for', { -- Basic for loop
-    t 'for ',
-    i(1, 'i'),
-    t ':=',
-    i(2, '0'),
-    t '; ',
-    rep(1),
-    i(3, '<'),
-    i(4, '[cond]'),
-    t '; ',
-    rep(1),
-    i(5, '++'),
-    t { ' {', '\t' },
-    i(6, '//action'),
-    t { '', '}' },
-  }),
+  s(
+    'for',
+    fmt( -- Basic for loop
+      [[
+		for {} := {}; {} {} {}; {}{} {{
+			{}
+		}}
+		]],
+      {
+        i(1, 'i'),
+        i(2, '0'),
+        rep(1),
+        i(3, '<'),
+        i(4),
+        rep(1),
+        i(5, '++'),
+        i(6, '//action'),
+      }
+    )
+  ),
 
   -- Switch
-  s('switch', {
-    t 'switch ',
-    i(1, '[var]'),
-    t { '{', 'case ' },
-    i(2, '[expression]'),
-    t { ':', '\t' },
-    i(3, '//action'),
-    t { '', 'case ' },
-    i(4, '[expression]'),
-    t { ':', '\t' },
-    i(5, '//action'),
-    t { '', 'default:', '\t' },
-    i(6, '//action'),
-    t { '', '}' },
-  }),
+  s(
+    'switch',
+    fmt(
+      [[
+		switch {} {{
+		case {}:
+			{}
+		case {}:
+			{}
+		default:
+			{}
+		}}
+		]],
+      {
+        i(1),
+        i(2),
+        i(3, '//action'),
+        i(4),
+        i(5, '//action'),
+        i(6, '//action'),
+      }
+    )
+  ),
+  ---------------------------------------------------------
+  -- Functions/Methods                                    |
+  ---------------------------------------------------------
+  s(
+    'nfunc',
+    fmt( -- Normal function
+      [[
+		func {}({}) {} {{
+			{}
+		}}
+		]],
+      {
+        i(1),
+        i(2),
+        i(3),
+        i(4, '//action'),
+      }
+    )
+  ),
 
-  -- Functions/Methods
-  s('nfunc', { -- Normal function
-    t 'func ',
-    i(1, 'FuncName'),
-    t '(',
-    i(2, 'args'),
-    t ') ',
-    i(3, 'ReturnType'),
-    t { ' {', '\t' },
-    i(4, '//action'),
-    t { '', '}' },
-  }),
+  s(
+    'sfunc',
+    fmt( -- Struct method
+      [[
+		func ({} *{}) {}({}) {} {{
+			{}
+		}}
+		]],
+      {
+        i(1),
+        i(2),
+        i(3),
+        i(4),
+        i(5),
+        i(6, '//action'),
+      }
+    )
+  ),
+  ---------------------------------------------------------
+  -- Functions/Methods                                    |
+  ---------------------------------------------------------
+  s(
+    'pubstruct',
+    fmt( -- Basic public struct with public fields
+      [[
+		type {} struct {{
+			{} {}
+			{} {}
+		}}
+		]],
+      {
+        i(1),
+        i(2, 'field'),
+        i(3, 'type'),
+        i(4, 'field'),
+        i(5, 'type'),
+      }
+    )
+  ),
 
-  s('sfunc', { -- Struct method
-    t 'func (',
-    i(1, 'receiver'),
-    t ') ',
-    i(2, 'FuncName'),
-    t '(',
-    i(3, 'args'),
-    t ') ',
-    i(4, 'ReturnType'),
-    t { ' {', '\t' },
-    i(5, '//action'),
-    t { '', '}' },
-  }),
-
-  -- Structs
-  s('pubstruct', { -- Basic public struct with public fields
-    t 'type ',
-    i(1, 'StructName'),
-    t { ' struct {', '\t' },
-    i(2, 'Field'),
-    t ' ',
-    i(3, 'Type'),
-    t { '', '}' },
-  }),
-
-  s('constructor', { -- Basic NewStruct() constructor function
-    t 'func New',
-    i(1, 'Struct'),
-    t '(',
-    i(2),
-    t ') *',
-    rep(1),
-    t { ' {', '\treturn &' },
-    rep(1),
-    t { '{', '\t\t' },
-    i(3),
-    t { '', '\t}', '}' },
-  }),
-
-  -- Enums
-  s('tenum', { -- Typed Enum
-    t 'type ',
-    i(1, 'Type'),
-    t { ' int', '', '' },
-    t { 'const (', '\t' },
-    i(2, 'Field'),
-    t ' ',
-    rep(1),
-    t ' = iota',
-    i(3),
-    t { '', ')' },
-  }),
+  s(
+    'constructor',
+    fmt( -- Basic NewStruct() constructor function
+      [[
+		func New{}() *{} {{
+			return &{}{{ {} }}
+		}}
+		]],
+      {
+        i(1, '[STRUCTNAME]'),
+        rep(1),
+        rep(1),
+        i(2),
+      }
+    )
+  ),
+  ---------------------------------------------------------
+  -- Enums                                                |
+  ---------------------------------------------------------
+  s(
+    'tenum',
+    fmt(
+      [[
+		type {} int
+		const (
+			{} = iota
+			{}
+		)
+		]],
+      {
+        i(1),
+        i(2),
+        i(3),
+      }
+    )
+  ),
 }
