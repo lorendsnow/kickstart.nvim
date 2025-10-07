@@ -2,7 +2,7 @@
 
 return {
   -- Loops
-  s('for (', {
+  s('for', {
     t 'for (',
     i(1, 'int i = 0'),
     t '; ',
@@ -12,5 +12,13 @@ return {
     t { ') {', '\t' },
     i(4, ''),
     t { '', '}' },
+  }),
+  -- Documentation Comments
+  s('funcdoc', { -- function documentation
+    t { '/**', ' * ' },
+    i(1, '[description]'),
+    t { '', ' *', ' *' },
+    i(2, ''),
+    t { '', ' */' },
   }),
 }
