@@ -563,6 +563,7 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         gopls = {},
+        rust_analyzer = {},
         lua_ls = {
           settings = {
             Lua = {
