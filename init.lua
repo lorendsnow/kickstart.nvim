@@ -129,6 +129,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- Set .h files to C filetype instead of C++
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+  desc = 'Set .h files to C filetype',
+  group = vim.api.nvim_create_augroup('h-filetype-c', { clear = true }),
+  pattern = '*.h',
+  callback = function()
+    vim.bo.filetype = 'c'
+  end,
+})
+
 -- Disable inlay hints for C/C++ files
 vim.api.nvim_create_autocmd({ 'LspAttach', 'BufEnter', 'BufWritePost', 'BufWritePre' }, {
   desc = 'Disable inlay hints for C/C++ files',
@@ -638,6 +648,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         c = { 'clang' },
+        h = { 'clang' },
       },
     },
   },
