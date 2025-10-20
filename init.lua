@@ -571,7 +571,18 @@ require('lazy').setup({
 
       -- Enable the following language servers
       local servers = {
-        clangd = {},
+        clangd = {
+          cmd = {
+            'clangd',
+            '--clang-tidy',
+            '-j=5',
+            '--malloc-trim',
+          },
+          filetypes = {
+            'c',
+            'cpp',
+          },
+        },
         gopls = {},
         rust_analyzer = {},
         lua_ls = {
@@ -589,6 +600,7 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'clang-format',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -649,6 +661,7 @@ require('lazy').setup({
         lua = { 'stylua' },
         c = { 'clang' },
         h = { 'clang' },
+        cpp = { 'clang' },
       },
     },
   },
