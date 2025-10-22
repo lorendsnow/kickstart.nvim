@@ -8,8 +8,11 @@ return {
         diagnostics_format = '#{m} (#{s})',
         sources = {
           null_ls.builtins.diagnostics.cppcheck.with {
-            extra_args = {
+            args = {
+              '--enable=warning,style,performance,portability',
+              '--template=gcc',
               '--inconclusive',
+              'src',
             },
           },
         },
